@@ -1,1 +1,1 @@
-# BrightTV
+# BrightTV This project analyses BrightTV's subscriber base and viewership transaction data to uncover consumption trends, identify content performance drivers, and recommend initiatives to grow the platform's user base. The deliverable is a polished 9-slide CEO presentation built programmatically from raw data.
