@@ -1,0 +1,47 @@
+select * 
+from `workspace`.`default`.`brightv_viewership` limit 100;
+
+
+select 
+from_utc_timestamp(`RecordDate2`, 'Africa/Johannesburg') AS converted_recording_time
+from `workspace`.`default`.`brightv_viewership` limit 100;
+
+
+
+select 
+from_utc_timestamp(`RecordDate2`, 'Africa/Johannesburg') AS SA_converted_time
+from `workspace`.`default`.`brightv_viewership` limit 100;
+
+
+
+SELECT
+DATE_FORMAT(RecordDate2, 'yyyy-MM-dd') AS DATE,
+DATE_FORMAT(RecordDate2, 'HH:mm:ss') AS TIME
+From `workspace`.`default`.`brightv_viewership` limit 100;
+
+
+
+
+
+
+--Convert UTC TO South Africa Time
+SELECT 
+v.UserID0,
+v.Channel2,
+v.RecordDate2,
+v.`Duration 2`,
+DATE_FORMAT(RecordDate2, 'yyyy-MM-dd') AS DATE,
+DATE_FORMAT(RecordDate2, 'HH:mm:ss') AS TIME,
+    date_add(HOUR, 2, RecordDate2) AS SA_Time,
+    date_format(date_add(HOUR, 2, RecordDate2), 'EEEE') AS Day_of_Week,
+    hour(date_add(HOUR, 2, RecordDate2)) AS Hour_of_Day,
+    COUNT(*) AS Total_Views,
+    SUM(unix_timestamp(`Duration 2`)) AS Total_Consumption,
+    CASE
+        WHEN SUM(unix_timestamp(`Duration 2`)) < 100 THEN 'Low Consumption'
+        WHEN SUM(unix_timestamp(`Duration 2`)) BETWEEN 100 AND 300 THEN 'Medium Consumption'
+        ELSE 'High Consumption'
+    END AS Consumption_Level
+FROM `workspace`.`default`.`brightv_viewership` v
+GROUP BY v.UserID0, v.Channel2, v.RecordDate2, v.`Duration 2`
+LIMIT 100;
